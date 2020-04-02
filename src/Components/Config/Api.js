@@ -17,7 +17,7 @@ async function LoginWithFacebook() {
   const provider = new firebase.auth.FacebookAuthProvider();
   let result = await firebase.auth().signInWithPopup(provider);
   let user = result.user;
-  console.log(user);
+  
   const db = firebase.firestore();
   const TempUser = {
     name: user.displayName,
@@ -26,5 +26,6 @@ async function LoginWithFacebook() {
     uId: user.uid
   };
   db.collection('userData').doc(user.uid).set(TempUser)
+  return TempUser
 }
 export { LoginWithFacebook };

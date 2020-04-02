@@ -1,23 +1,29 @@
 import React, { Component } from "react";
-// Firebase App (the core Firebase SDK) is always required and must be listed first
 
-// If you enabled Analytics in your project, add the Firebase SDK for Analytics
-import "firebase/analytics";
 import Background from "../../images/backgroud.jpg";
-
-// Add the Firebase products that you want to use
 
 import { withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LoginWithFacebook } from "../../Config/Api";
 import Fb from "../../images/facebook.jpg";
+import { UpdateUser } from "../../../Store/actions/userActions";
+import {connect} from 'react-redux'
+
 class Login extends Component {
+  state={
+    user:{}
+  }
   async login() {
     const user = await LoginWithFacebook();
+    console.log(user);
+
+    this.props.updateTheUser(user)
+    this.setState({user})
     this.props.history.push("/home");
   }
 
   render() {
+    const {user}=this.state
     return (
       <div
         style={{
@@ -29,7 +35,7 @@ class Login extends Component {
         }}
       >
         <div
-          className=" container"
+          className=" "
           style={{
             height: "25%",
             width: "25%",
@@ -41,11 +47,11 @@ class Login extends Component {
             color: "white"
           }}
         >
-          <div className="row">
-            <div className="col-4">
+          <div>
+            <div>
               <h1 style={{ textAlign: "center" }}>Login</h1>
             </div>
-            <div className="col-4">
+            <div>
               <h2>Email</h2>
             </div>
             <input type="text" className="form-control " placeholder="Email" />
@@ -75,7 +81,28 @@ class Login extends Component {
           </div>
         </div>
       </div>
+      
     );
+ 
+    
   }
+ 
+ 
 }
-export default withRouter(Login);
+const mapStateToProps=(state)=>{
+ 
+return{
+  user:state
+}
+
+  
+
+}
+const mapDispatchToProps=(dispatch)=>{
+  return{
+    updateTheUser:(user)=>dispatch(UpdateUser(user))
+  }
+
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Login));
