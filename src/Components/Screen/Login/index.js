@@ -1,79 +1,80 @@
 import React, { Component } from "react";
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import * as firebase from "firebase/app";
-import { FaFacebookF } from 'react-icons/fa';
 
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 import "firebase/analytics";
+import Background from "../../images/backgroud.jpg";
 
 // Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
+
 import { withRouter } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { LoginWithFacebook } from "../../Config/Api";
+import Fb from "../../images/facebook.jpg";
 class Login extends Component {
-  login = () => {
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6YcpH8YJEJIcYFz96RXwbvEKhhpeHDjg",
-      authDomain: "app-9b871.firebaseapp.com",
-      databaseURL: "https://app-9b871.firebaseio.com",
-      projectId: "app-9b871",
-      storageBucket: "app-9b871.appspot.com",
-      messagingSenderId: "96192709911",
-      appId: "1:96192709911:web:4472452a0e736e9bd8a352",
-      measurementId: "G-9JTHLSDS31"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const provider = new firebase.auth.FacebookAuthProvider();
-
-firebase.auth().signInWithPopup(provider).then(function(result) {
-  console.log(provider)
-  console.log(result)
-  var token = result.credential.accessToken;
- 
-  // The signed-in user info.
-  
-  var user = result.user;
-
-
-  // ...
-})
-      .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-    
-        ;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-
-        // ...
-      });
-  };
+  async login() {
+    const user = await LoginWithFacebook();
+    this.props.history.push("/home");
+  }
 
   render() {
-    
     return (
-   
-     <div style={{height:'100rem', border:'2px solid black', }}>
-       <div style={{height:"25%", width:'25%', backgroundColor:'white', margin:'auto',padding:'5%'}}>
-         <h2>Email</h2>
-         <input type='email' placeholder='Email'/>
-         <h2>Password</h2>
-         
-         <input type='password' placeholder='Password'/>
-         <br/>
-         <button> Login</button>
-         <br/>
-         <button onClick={this.login}>
-         <FaFacebookF/>
-         </button>
-       </div>
+      <div
+        style={{
+          width: "100%",
+          height: "45.6rem",
+          backgroundImage: `url(${Background})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover"
+        }}
+      >
+        <div
+          className=" container"
+          style={{
+            height: "25%",
+            width: "25%",
+            backgroundColor: "white",
+            margin: "auto",
+            padding: "5%",
+            font: "18px Arial sans-serif",
+            background: "rgba(0, 0, 0, 0)",
+            color: "white"
+          }}
+        >
+          <div className="row">
+            <div className="col-4">
+              <h1 style={{ textAlign: "center" }}>Login</h1>
+            </div>
+            <div className="col-4">
+              <h2>Email</h2>
+            </div>
+            <input type="text" className="form-control " placeholder="Email" />
 
-     </div>
-  
+            <h2>Password</h2>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Password"
+            />
+            <br />
+            <button style={{ marginRight: "50%" }} class="btn btn-primary">
+              {" "}
+              Login
+            </button>
+            <br />
+            {/* <button >
+           Login with facebook
+        
+         </button> */}
+            <br />
+
+            <button class="btn btn-primary" onClick={this.login.bind(this)}>
+              {" "}
+              Login With Facebook
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 }
