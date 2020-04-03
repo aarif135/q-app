@@ -3,7 +3,7 @@ import Store from './Store'
 import Router from './Components/Config/Router'
 import {Provider} from 'react-redux'
 class App extends Component{
-    
+
 render(){
   
   return(
