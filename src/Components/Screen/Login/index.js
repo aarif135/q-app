@@ -14,12 +14,13 @@ class Login extends Component {
     user:{}
   }
   async login() {
+    
+    this.props.history.push("/home");
     const user = await LoginWithFacebook();
     console.log(user);
 
     this.props.updateTheUser(user)
     this.setState({user})
-    this.props.history.push("/home");
   }
 
   render() {
@@ -35,7 +36,7 @@ class Login extends Component {
         }}
       >
         <div
-          className=" "
+         
           style={{
             height: "25%",
             width: "25%",
@@ -63,7 +64,7 @@ class Login extends Component {
               placeholder="Password"
             />
             <br />
-            <button style={{ marginRight: "50%" }} class="btn btn-primary">
+            <button style={{ marginRight: "50%" }} className="btn btn-primary">
               {" "}
               Login
             </button>
