@@ -39,7 +39,8 @@ class Home extends Component {
       client_secret: "QNIAKAROVQN3KAJMLQACZFUENQ0143DEPQ0VHF54MI01TAOZ",
       ll: this.state.latLon,
       v: "20200403",
-      near: "pakistan "
+      near: "karachi",
+      
     };
     axios
       .get(endPoint + new URLSearchParams(parameter))
@@ -74,7 +75,7 @@ class Home extends Component {
         <button className="btn btn-primary">Are You Company</button>
         <button className="btn btn-success">Are You awating for token</button>
  
-        <Example/>
+        <Example venue={venues}/>
 
   
       </div>
