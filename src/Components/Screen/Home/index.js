@@ -65,17 +65,17 @@ class Home extends Component {
   render() {
     console.log(this.state.latLon);
     const {venues}=this.state
-   
+   console.log(this.props.user)
     
 
 
     return (
       <div>
-        <h1>user Logged in:arif</h1>
+        <h1>user Logged in:{this.props.user.name}</h1>
         <button className="btn btn-primary">Are You Company</button>
         <button className="btn btn-success">Are You awating for token</button>
  
-        <Example venue={venues}/>
+        <Example user={this.props.user} venue={venues}/>
 
   
       </div>

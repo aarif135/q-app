@@ -10,9 +10,13 @@ class Example extends Component {
   state = {
     lgShow: false,
     setLgShow: false,
-    venue:'',
-    searchVal:'',
-    searchList:[]
+    venue: "",
+    searchVal: "",
+    searchList: [],
+    companyName: "",
+    since: "",
+    Timings: "",
+    certificate: "",
   };
   stateChange = () => {
     this.setState({
@@ -26,25 +30,33 @@ class Example extends Component {
       lgShow: false,
     });
   };
-  address = (e) => {
-   let searchVal= e.target.value;
-  let location=this.props.venue
-     const val=location.filter(item=>{
-    return item.venue.name.includes(e.target.value)==true
-    })
-    console.log(val)
+  address = (key, value) => {
+    let searchVal = value;
+    let location = this.props.venue;
+    const val = location.filter((item) => {
+      return item.venue.name.includes(value) == true;
+    });
+    console.log(val);
     this.setState({
-      searchList:val,
-      searchVal
-    })
- 
-
-   
-
+      searchList: val,
+      searchVal,
+      [key]: value,
+    });
   };
+
+  submit = () => {
+    const { address, Timings, since, companyName } = this.state;
+    const data = { address, Timings, since, companyName };
+    firebase
+      .firestore()
+      .collection("company data")
+      .doc()
+      .set(data)
+      .then(this.hide());
+  };
+
   render() {
-    const { lgShow, searchVal,searchList } = this.state;
-    console.log(searchList,searchVal)
+    const { lgShow, searchVal, searchList } = this.state;
 
     return (
       <>
@@ -70,6 +82,7 @@ class Example extends Component {
               placeholder="Company Name"
               className="form-control"
               type="text"
+              onChange={(e) => this.address("CompanyName", e.target.value)}
             />
             <p className="primary">Since </p>
             <input
@@ -77,25 +90,42 @@ class Example extends Component {
               placeholder="Since"
               className="form-control"
               type="date"
+              onChange={(e) => this.address("since", e.target.value)}
             />
             <p className="primary">Timings</p>
-            <input id="time" className="form-control" type="time" />
+            <input
+              id="time"
+              className="form-control"
+              type="time"
+              onChange={(e) => this.address("Timings", e.target.value)}
+            />
             <p className="primary">Certificate</p>
-            <input id="certificate" type="file" />
+            <input
+              id="certificate"
+              type="file"
+              onChange={(e) => this.address("certificate", e.target.value)}
+            />
             <p>Address</p>
 
             <input
-              onChange={this.address}
+              onChange={(e) => this.address("address", e.target.value)}
               id="address"
               placeholder="Address"
               className="form-control"
               type="text"
-           
             />
-            {searchList.map(item=>{
-              return <div><a href=''>{item.venue.name}</a></div>
+            {searchList.map((item) => {
+              return (
+                <div>
+                  <a id="name" href="">
+                    {item.venue.name}
+                  </a>
+                </div>
+              );
             })}
-            <button className="btn btn-primary">Submit</button>
+            <button onClick={this.submit} className="btn btn-primary">
+              Submit
+            </button>
           </Modal.Body>
         </Modal>
       </>

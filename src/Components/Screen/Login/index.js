@@ -15,12 +15,13 @@ class Login extends Component {
   }
   async login() {
     
-    this.props.history.push("/home");
+   
     const user = await LoginWithFacebook();
     console.log(user);
 
     this.props.updateTheUser(user)
     this.setState({user})
+    this.props.history.push("/home");
   }
 
   render() {
