@@ -21,16 +21,8 @@ class Company extends Component {
   componentDidMount() {
     this.getLocation();
     let info = [];
-    firebase
-      .firestore()
-      .collection("companyInformation")
-      .onSnapshot((item) => {
-        item.forEach((doc) => {
-          console.log(doc.data());
-          info.push(doc.data());
-        });
-        this.setState({ comData: info });
-      });
+    this.getAllData()
+  
   }
   getLocation = () => {
     console.log("1");
@@ -68,9 +60,21 @@ class Company extends Component {
         console.log(error.message);
       });
   };
-
+  getAllData=()=>{
+    const db=firebase.firestore()
+    let allData=[]
+    db.collection('companyData').onSnapshot(item=>{
+      item.forEach(doc=>{
+        doc.data()
+        allData.push(doc.data())
+      })
+     this.setState({
+       comData:allData
+     })
+    })
+  }
   render() {
-    const { venues, comData } = this.state;
+    const { venues, comData,latLon } = this.state;
     console.log(comData);
 
     return (
@@ -105,12 +109,15 @@ class Company extends Component {
               <th>TIMINGS</th>
              <th>ADDRESS</th>
               <th >
-                <Example venue={venues} />
+                <Example ll={latLon} venue={venues} />
               </th>
             </tr>
             {
               comData.map(item=>{
               return<tr><td>{item.companyName}</td>
+              <td>{item.since}</td>
+              <td>{item.Timings}</td>
+              <td>{item.address}</td>
               
               
               </tr>

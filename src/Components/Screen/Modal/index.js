@@ -38,16 +38,19 @@ class Example extends Component {
     });
   };
   address = (key, value) => {
+    const {searchList}=this.state
     let searchVal = value;
-    // let location = this.props.venue;
-    // const val = location.filter((item) => {
-    //   return item.venue.name.includes(value) == true;
-    // });
-
-    this.setState({
-     
-      [key]: value,
+    let location = this.props.venue;
+    const val = location.filter((item) => {
+      return item.venue.name.includes(value) == true;
     });
+    
+    this.setState({
+      searchList:val,
+      [key]:value
+    })
+  
+ 
    };
 
   submit = () => {
@@ -60,12 +63,14 @@ class Example extends Component {
       data,
     } = this.state;
     let Timings = TimingsFrom + "to" + TimingsTo;
-   const info={companyName,since,address,Timings}
-   data.push(info)
-   this.setState({
-     data
-   })
-this.props.companyInfo(data)
+    const ll=this.props.ll
+   const info={companyName,since,address,Timings,ll}
+    const db=firebase.firestore()
+    db.collection("companyData").doc().set(info).then(res=>{
+      this.hide()
+    
+    })
+
   };
   allow=()=>{
     this.setState({
@@ -79,11 +84,11 @@ this.props.companyInfo(data)
   }
   render() {
     const { lgShow,  searchList, data,allow } = this.state;
-    console.log(data)
+ 
   
-    const userData=this.props.user
-    localStorage.setItem("userObj",JSON.stringify(userData))
-    let us= localStorage.getItem("userObj")
+    // const userData=this.props.user
+    // localStorage.setItem("userObj",JSON.stringify(userData))
+    // let us= localStorage.getItem("userObj")
  
     
     return (
