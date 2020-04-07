@@ -2,6 +2,7 @@ import React from "react";
 import Login from '../Screen/Login'
 import Home from '../Screen/Home'
 import Company from '../Screen/Company'
+import User from '../Screen/User'
 
 import {
   BrowserRouter as Router,
@@ -32,6 +33,11 @@ export default function Routers() {
             <Company/>
      
           </Route>
+          <Route path='/User'>
+            <User/>
+
+          </Route>
+        
         </Switch>
       </div>
     </Router>

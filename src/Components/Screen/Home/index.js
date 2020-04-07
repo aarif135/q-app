@@ -6,6 +6,9 @@ class Home extends Component {
   Company=()=>{
     this.props.history.push('/Company')
   }
+  User=()=>{
+    this.props.history.push('/User')
+  }
   render() {
     return (
       <div   style={{
@@ -22,7 +25,7 @@ class Home extends Component {
     <img src={this.props.user.photoUrl}/>
         <button  onClick={this.Company} className="btn btn-primary">Are You Company</button>
         <br/>
-        <button className="btn btn-success">
+        <button onClick={this.User} className="btn btn-success">
           Are You awating for token
         </button>
         </div>
