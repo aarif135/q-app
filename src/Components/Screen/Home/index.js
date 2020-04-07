@@ -1,94 +1,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import  { Example } from '../Modal'
-import axios from "axios";
-import Modal from 'react-bootstrap/Modal'
+import Background from "../../images/backgroud.jpg";
 class Home extends Component {
-  constructor() {
-    super();
-    this.state = {
-      latLon: "",
-      venues: [],
-      location: []
-    };
-  }
-  componentDidMount() {
-    this.getLocation();
-  }
-  getLocation = () => {
-    console.log("1");
-    navigator.geolocation.getCurrentPosition(response => {
-      let latlong = response.coords.latitude + "," + response.coords.longitude;
-      this.setState(
-        {
-          latLon: latlong
-        },
-        () => {
-          console.log("2");
-          this.getVenue();
-        }
-      );
-    });
-  };
-
-  getVenue = query => {
-    const endPoint = "https://api.foursquare.com/v2/venues/explore?";
-    const parameter = {
-      client_id: "BGTHONCSD3S2ZFWFA1V0AJC3UOCVODWCHI2VTWKCMWKQQ3BD",
-      client_secret: "QNIAKAROVQN3KAJMLQACZFUENQ0143DEPQ0VHF54MI01TAOZ",
-      ll: this.state.latLon,
-      v: "20200403",
-      near: "karachi",
-      
-    };
-    axios
-      .get(endPoint + new URLSearchParams(parameter))
-      .then(response => {
-        this.setState({
-          venues: response.data.response.groups[0].items
-        });
-      })
-      .catch(error => {
-        console.log(error.message);
-      });
-  };
-  location = () => {
-      const {venues}=this.state
-    const venue=venues.map()
-  };
-
-  change=(e)=>{
-      console.log(e.target.value)
-
+  Company=()=>{
+    this.props.history.push('/Company')
   }
   render() {
-    console.log(this.state.latLon);
-    const {venues}=this.state
-   console.log(this.props.user)
-    
-
-
     return (
-      <div>
-        <h1>user Logged in:{this.props.user.name}</h1>
-        <button className="btn btn-primary">Are You Company</button>
-        <button className="btn btn-success">Are You awating for token</button>
- 
-        <Example user={this.props.user} venue={venues}/>
-
-  
-      </div>
+      <div   style={{
+        width: "100%",
+        height: "45.6rem",
+        backgroundImage: `url(${Background})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        
+      }}>
+        <div style={{position:'relative',top:'20rem',marginLeft:'40%',marginRight:'auto'}}>
+       
+    <h1 style={{color:'white'}}>user Logged in:{this.props.user.name}</h1>
+    <img src={this.props.user.photoUrl}/>
+        <button  onClick={this.Company} className="btn btn-primary">Are You Company</button>
+        <br/>
+        <button className="btn btn-success">
+          Are You awating for token
+        </button>
+        </div>
+      </div>    
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
+   console.log(state)
   return {
-    user: state.user
+    user: state.user,
+    
   };
-};
+}
 
-export default connect(mapStateToProps)(withRouter(Home))
-
-
-;
+export default connect(mapStateToProps)(withRouter(Home));

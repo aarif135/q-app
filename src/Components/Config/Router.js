@@ -1,6 +1,7 @@
 import React from "react";
 import Login from '../Screen/Login'
 import Home from '../Screen/Home'
+import Company from '../Screen/Company'
 
 import {
   BrowserRouter as Router,
@@ -27,7 +28,8 @@ export default function Routers() {
               <Home/>
       
           </Route>
-          <Route path="/">
+          <Route path="/Company">
+            <Company/>
      
           </Route>
         </Switch>

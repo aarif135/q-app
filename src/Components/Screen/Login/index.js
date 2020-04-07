@@ -26,6 +26,8 @@ class Login extends Component {
 
   render() {
     const {user}=this.state
+    console.log(this.props.companyInfo)
+
     return (
       <div
         style={{
@@ -94,7 +96,8 @@ class Login extends Component {
 const mapStateToProps=(state)=>{
  
 return{
-  user:state
+  user:state,
+  companyInfo:state
 }
 
   

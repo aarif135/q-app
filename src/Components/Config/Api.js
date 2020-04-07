@@ -28,4 +28,21 @@ async function LoginWithFacebook() {
   db.collection('userData').doc(user.uid).set(TempUser)
   return TempUser
 }
-export { LoginWithFacebook };
+async function CompanyData(){
+   await firebase
+  .firestore()
+  .collection("companyInformation")
+  .get()
+  .then((data) => {
+     data.forEach((comp) => {
+   comp.data()
+     
+
+    });
+
+
+    
+  });
+
+}
+export { LoginWithFacebook,CompanyData};

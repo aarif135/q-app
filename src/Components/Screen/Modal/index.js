@@ -5,6 +5,10 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import { LoginWithFacebook } from "../../Config/Api";
 import { connect } from "react-redux";
+import Company from "../Company";
+import Token from '../Token';
+import {companyInfo} from '../../../Store/actions/userActions'
+
 
 class Example extends Component {
   state = {
@@ -15,8 +19,11 @@ class Example extends Component {
     searchList: [],
     companyName: "",
     since: "",
-    Timings: "",
+    TimingsFrom: "",
+    TimingsTo: "",
     certificate: "",
+    data: [],
+    allow:false
   };
   stateChange = () => {
     this.setState({
@@ -32,37 +39,63 @@ class Example extends Component {
   };
   address = (key, value) => {
     let searchVal = value;
-    let location = this.props.venue;
-    const val = location.filter((item) => {
-      return item.venue.name.includes(value) == true;
-    });
-    console.log(val);
+    // let location = this.props.venue;
+    // const val = location.filter((item) => {
+    //   return item.venue.name.includes(value) == true;
+    // });
+
     this.setState({
-      searchList: val,
-      searchVal,
+     
       [key]: value,
     });
-  };
+   };
 
   submit = () => {
-    const { address, Timings, since, companyName } = this.state;
-    const data = { address, Timings, since, companyName };
-    firebase
-      .firestore()
-      .collection("company data")
-      .doc()
-      .set(data)
-      .then(this.hide());
+    const {
+      address,
+      TimingsFrom,
+      TimingsTo,
+      since,
+      companyName,
+      data,
+    } = this.state;
+    let Timings = TimingsFrom + "to" + TimingsTo;
+   const info={companyName,since,address,Timings}
+   data.push(info)
+   this.setState({
+     data
+   })
+this.props.companyInfo(data)
   };
-
+  allow=()=>{
+    this.setState({
+      allow:true
+    })
+  }
+  disallow=()=>{
+    this.setState({
+      allow:false
+    })
+  }
   render() {
-    const { lgShow, searchVal, searchList } = this.state;
-
+    const { lgShow,  searchList, data,allow } = this.state;
+    console.log(data)
+  
+    const userData=this.props.user
+    localStorage.setItem("userObj",JSON.stringify(userData))
+    let us= localStorage.getItem("userObj")
+ 
+    
     return (
       <>
-        <button className="btn btn-primary" onClick={this.stateChange}>
-          +
+    
+        <button className="btn btn-primary " onClick={this.stateChange}>
+          +ADD DETAILS
         </button>
+        {allow?<div><Token/> <button onClick={this.disallow}  className='btn btn-danger'>disallow</button> </div>:
+           <button className='btn btn-success' onClick={this.allow}>Allow</button>}
+        
+     
 
         <Modal
           size="lg"
@@ -82,7 +115,7 @@ class Example extends Component {
               placeholder="Company Name"
               className="form-control"
               type="text"
-              onChange={(e) => this.address("CompanyName", e.target.value)}
+              onChange={(e) => this.address("companyName", e.target.value)}
             />
             <p className="primary">Since </p>
             <input
@@ -92,12 +125,19 @@ class Example extends Component {
               type="date"
               onChange={(e) => this.address("since", e.target.value)}
             />
-            <p className="primary">Timings</p>
+            <p className="primary">Timings From</p>
             <input
               id="time"
               className="form-control"
               type="time"
-              onChange={(e) => this.address("Timings", e.target.value)}
+              onChange={(e) => this.address("TimingsFrom", e.target.value)}
+            />
+            <p className="primary">Timings to</p>
+            <input
+              id="time"
+              className="form-control"
+              type="time"
+              onChange={(e) => this.address("TimingsTo", e.target.value)}
             />
             <p className="primary">Certificate</p>
             <input
@@ -123,7 +163,8 @@ class Example extends Component {
                 </div>
               );
             })}
-            <button onClick={this.submit} className="btn btn-primary">
+            <br />
+            <button onClick={this.submit} className="btn btn-success">
               Submit
             </button>
           </Modal.Body>
@@ -137,5 +178,11 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-export default connect(mapStateToProps);
-export { Example };
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     updateTheDat: () => dispatch(this.state.data),
+//     formDataRequest:(data)=>dispatch(companyInfo(data))
+   
+//   };
+// };
+export default connect(mapStateToProps,{companyInfo})(Example);
