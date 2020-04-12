@@ -23,7 +23,9 @@ class Example extends Component {
     TimingsTo: "",
     certificate: "",
     data: [],
-    allow:false
+    allow:false,
+    value:'',
+    adding:false
   };
   stateChange = () => {
     this.setState({
@@ -38,6 +40,7 @@ class Example extends Component {
     });
   };
   address = (key, value) => {
+    
     const {searchList}=this.state
     let location = this.props.venue;
     const val = location.filter((item) => {
@@ -46,26 +49,32 @@ class Example extends Component {
     
     this.setState({
       searchList:val,
-      [key]:value
+      [key]:value,
+      adding:true,
+      value
+    
+    
     })
   
  
    };
 
-  submit = () => {
+  submit = (name) => {
     const {
       address,
       TimingsFrom,
       TimingsTo,
       since,
       companyName,
+      value,
       data,
     } = this.state;
     let Timings = TimingsFrom + "to" + TimingsTo;
     const ll=this.props.ll
     let token=20
+  console.log(this.state.value)
    
-   const info={companyName,since,address,Timings,ll,token}
+   const info={companyName,since,value,Timings,ll,token}
     const db=firebase.firestore()
     db.collection("companyData").doc().set(
       {companyName,since,address,Timings,ll,token
@@ -86,10 +95,18 @@ class Example extends Component {
       allow:false
     })
   }
-  render() {
-    const { lgShow,  searchList, data,allow } = this.state;
- 
   
+val=(name)=>{
+this.setState({
+  value:name
+})
+}
+ 
+  render() {
+    const { lgShow,  searchList, data,allow,adding,value} = this.state;
+    
+ 
+
     // const userData=this.props.user
     // localStorage.setItem("userObj",JSON.stringify(userData))
     // let us= localStorage.getItem("userObj")
@@ -162,20 +179,26 @@ class Example extends Component {
               placeholder="Address"
               className="form-control"
               type="text"
+              value={this.state.value}
+  
             />
-            {searchList.map((item) => {
+            {adding?searchList.map((item) => {
               return (
                 <div>
-                  <a id="name" href="">
+                  <p style={{cursor:'pointer'}} onClick={()=>this.val(item.venue.name)}>
+                    
                     {item.venue.name}
-                  </a>
+                  </p>
+                  
                 </div>
+                
               );
-            })}
-            <br />
+            }) :null}
             <button onClick={this.submit} className="btn btn-success">
-              Submit
-            </button>
+                   Submit
+                 </button>
+            <br />
+         
           </Modal.Body>
         </Modal>
       </>
