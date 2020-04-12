@@ -39,7 +39,6 @@ class Example extends Component {
   };
   address = (key, value) => {
     const {searchList}=this.state
-    let searchVal = value;
     let location = this.props.venue;
     const val = location.filter((item) => {
       return item.venue.name.includes(value) == true;
@@ -64,9 +63,14 @@ class Example extends Component {
     } = this.state;
     let Timings = TimingsFrom + "to" + TimingsTo;
     const ll=this.props.ll
-   const info={companyName,since,address,Timings,ll}
+    let token=20
+   
+   const info={companyName,since,address,Timings,ll,token}
     const db=firebase.firestore()
-    db.collection("companyData").doc().set(info).then(res=>{
+    db.collection("companyData").doc().set(
+      {companyName,since,address,Timings,ll,token
+      }
+    ).then(res=>{
       this.hide()
     
     })

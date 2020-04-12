@@ -8,6 +8,14 @@ class Home extends Component {
   }
   User=()=>{
     this.props.history.push('/User')
+    let obj ={
+      name:"abc",
+      email:"abc@email.com",
+      passwod:"******"
+    }
+
+   
+
   }
   render() {
     return (

@@ -8,6 +8,7 @@ import * as firebase from "firebase/app";
 import { Token } from "../Token";
 import { formDataRequestAction } from "../../../Store/actions/userActions";
 import { CompanyData } from "../../Config/Api";
+import {withRouter} from 'react-router-dom'
 class Company extends Component {
   constructor() {
     super();
@@ -73,6 +74,9 @@ class Company extends Component {
      })
     })
   }
+  user=()=>{
+    this.props.history.push('/User')
+  }
   render() {
     const { venues, comData,latLon } = this.state;
     console.log(comData);
@@ -87,6 +91,7 @@ class Company extends Component {
           backgroundSize: "cover",
         }}
       >
+        <button onClick={this.user} className='btn btn-danger '> user </button>
         <div className="container">
           <h1 style={{ color: "white", textAlign: "center" }}>
             COMPANY INFORMATION
@@ -139,4 +144,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { formDataRequestAction })(Company);
+export default connect(mapStateToProps, { formDataRequestAction }) (withRouter(Company));
