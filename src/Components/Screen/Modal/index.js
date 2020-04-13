@@ -101,7 +101,12 @@ this.setState({
   value:name
 })
 }
- 
+ info=(key,value)=>{
+   this.setState({
+     [key]:value
+   })
+
+ }
   render() {
     const { lgShow,  searchList, data,allow,adding,value} = this.state;
     
@@ -141,7 +146,7 @@ this.setState({
               placeholder="Company Name"
               className="form-control"
               type="text"
-              onChange={(e) => this.address("companyName", e.target.value)}
+              onChange={(e) => this.info("companyName", e.target.value)}
             />
             <p className="primary">Since </p>
             <input
@@ -149,27 +154,27 @@ this.setState({
               placeholder="Since"
               className="form-control"
               type="date"
-              onChange={(e) => this.address("since", e.target.value)}
+              onChange={(e) => this.info("since", e.target.value)}
             />
             <p className="primary">Timings From</p>
             <input
               id="time"
               className="form-control"
               type="time"
-              onChange={(e) => this.address("TimingsFrom", e.target.value)}
+              onChange={(e) => this.info("TimingsFrom", e.target.value)}
             />
             <p className="primary">Timings to</p>
             <input
               id="time"
               className="form-control"
               type="time"
-              onChange={(e) => this.address("TimingsTo", e.target.value)}
+              onChange={(e) => this.info("TimingsTo", e.target.value)}
             />
             <p className="primary">Certificate</p>
             <input
               id="certificate"
               type="file"
-              onChange={(e) => this.address("certificate", e.target.value)}
+              onChange={(e) => this.info("certificate", e.target.value)}
             />
             <p>Address</p>
 
